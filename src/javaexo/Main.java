@@ -18,7 +18,7 @@ public class Main {
     public static void main(String[] args) {
         
         Chaine uneChaine = new Chaine("Coucou j'écris une longue phrase! Lorem Ipsum");
-        System.out.println(uneChaine.getMachaine());
+        //System.out.println(uneChaine.getMachaine());
     }
     
 }

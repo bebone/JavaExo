@@ -17,14 +17,15 @@ public class Chaine {
     private int _nTaille;
     private static final int _nTailleMax = 1000;
 
-    //constructeur
+    // *** CONSTRUCTEURS
     public Chaine() {
         _aChaine = new char[_nTailleMax];
         _nTaille = 0;
     }
 
+    // Surcharge 1
     public Chaine(String s) {
-        this();
+        this(); // ?? on appelle le premier constructeur?? - Prof !
         int lg = s.length();
         if (lg > _nTailleMax) {
             _nTaille = _nTailleMax;
@@ -33,21 +34,23 @@ public class Chaine {
         }
 
         for (int i = 0; i < _nTaille; i++) {
-            _aChaine[i] = s.charAt(i);
+            _aChaine[i] = s.charAt(i); // OK [Compris]
         }
-        _aChaine = s.toCharArray();
+        _aChaine = s.toCharArray(); // ?? ça marche si on fait ça sans passer par une boucle ??
+
     }
 
-    public Chaine(Chaine c) {
+    // Surcharge 2
+    public Chaine(Chaine c) { // On créé un objet Chaine qui attend en paramètre un autre objet de type Chaine
         this();
-        _nTaille = c.getTaille();
+        _nTaille = c.getTaille(); // OK
         for (int i = 0; i < _nTaille; i++) {
-            _aChaine[i] = c.getCar(i);
+            _aChaine[i] = c.getCar(i); // OK
         }
 
     }
 
-    //getters
+    //GETTERS
     public int getTaille() {
         return _nTaille;
     }
@@ -62,32 +65,32 @@ public class Chaine {
 
     public Chaine getChaine(int pos, int lg) {
         String s = getString(pos, lg);
-        return new Chaine(s);
+        return new Chaine(s); // appelle la surcharge (1 paramètre string attendu)
     }
 
     public String getString(int pos, int lg) {
         if (pos + lg >= _nTaille) {
-            lg = _nTaille - pos;
+            lg = _nTaille - pos; // ?
         }
         if (lg > 0) {
-            return new String(_aChaine, pos, lg); // constructeur (char[] value, int offset, int count)
+            return new String(_aChaine, pos, lg); // Class String (char[] value, int offset, int count)
         } else {
             return ""; // VIDE
         }
 
     }
 
-    //setters
+    //SETTERS
     public void setCar(int pos, char c) {
         if (pos < _nTaille) {
-            _aChaine[pos] = c;
+            _aChaine[pos] = c; // OK
         }
     }
 
     public void setChaine(Chaine c, int pos) {
         int lg = c.getTaille();
         if (pos + lg >= _nTailleMax) {
-            lg = _nTailleMax - pos;
+            lg = _nTailleMax - pos; // ?
         }
         for (int i = 0; i < lg; i++) {
             _aChaine[pos + i] = c.getCar(i);
@@ -108,16 +111,15 @@ public class Chaine {
 
     }
 
-
-    public void tronque(int lg) {
+    public void tronque(int lg) { //tableau avec nouvelle taille (inférieure)
 
         if (lg < _nTaille) {
-            _nTaille = lg;
+            _nTaille = lg; // OK
         }
     }
 
     public boolean egale(String s) {
-        return s.equals(convert());
+        return s.equals(convert()); // (on ne peut pas faire == avec String car réf. d'objet )
     }
 
     public boolean egale(Chaine c) {
@@ -131,45 +133,46 @@ public class Chaine {
                 return false;
             }
         }
-        return true;
+        return true; // OK
     }
 
     public String convert() {
-        //return _aChaine.toString();
+        //return _aChaine.toString(); OK avec ça ?
         return new String(_aChaine, 0, _nTaille);
     }
-    
-    
-    public int recherche (Chaine c) {
-        int lg=c.getTaille();
-        for (int i =0; i<_nTaille-lg;i++) {
-            int j=0;
-            while (j <lg && c.getCar(i)== _aChaine[i+1])
+
+    public int recherche(Chaine c) { // Recherche avec un objet Chaine / objet Chaine ..
+        /* On a l'objet A Chaine qui appelle la fonction recherche avec objet Chaine B
+        _nTaille correspond à la _nTaille de l'objet A (?) */
+        int lg = c.getTaille();
+        for (int i = 0; i < _nTaille - lg; i++) {
+            int j = 0;
+            while (j < lg && c.getCar(i) == _aChaine[i + 1]) {
                 j++;
-            if (j==lg)
+            }
+            if (j == lg) {
                 return j;
-            
+            }
+
         }
         return -1;
     }
-    
 
     public void affiche() {
         System.out.println(convert());
     }
 
     public void insere(Chaine c, int pos, int lg) {
-        decale(pos,lg);
-        lg=Math.min(c.getTaille(), _nTailleMax-pos);
-        
-        for (int i=0; i<lg ; i++)
-        {
-            _aChaine[pos+i]=c.getCar(i);
+        decale(pos, lg);
+        lg = Math.min(c.getTaille(), _nTailleMax - pos);
+
+        for (int i = 0; i < lg; i++) {
+            _aChaine[pos + i] = c.getCar(i);
         }
 
     }
 
-    //méthodes auxiliaires
+    // *** AUXILIAIRES
     private void decale(int pos, int lg) {
 
         for (int i = _nTaille - 1; i >= pos; i--) {
